@@ -5,7 +5,7 @@ class Meal {
     public title: string,
     public affordability: string,
     public complexity: string,
-    public imageURL: string,
+    public imageUrl: string,
     public duration: number,
     public ingredients: Array<string>,
     public steps: Array<string>,
