@@ -1,18 +1,27 @@
 import React from "react";
-import { View, Text, StyleSheet, Button } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  ListRenderItemInfo,
+} from "react-native";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
+
+import Category from "../models/Category";
+import { CATEGORIES } from "../data/dummy-data";
+
+const renderGridItem = (itemData: ListRenderItemInfo<Category>) => {
+  return (
+    <View>
+      <Text>{itemData.item.title}</Text>
+    </View>
+  );
+};
 
 const CategoriesScreen: NavigationStackScreenComponent = (props) => {
   return (
-    <View style={styles.screen}>
-      <Text>Categories Screen</Text>
-      <Button
-        title="Go to Meals!"
-        onPress={() => {
-          props.navigation.navigate({ routeName: "CategoryMeals" });
-        }}
-      />
-    </View>
+    <FlatList data={CATEGORIES} renderItem={renderGridItem} numColumns={2} />
   );
 };
 

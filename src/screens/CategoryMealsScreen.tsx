@@ -10,6 +10,7 @@ const CategoryMealsScreen: NavigationStackScreenComponent = (props) => {
         title="Go to Detail!"
         onPress={() => props.navigation.navigate({ routeName: "MealDetail" })}
       />
+      <Button title="Go Back!" onPress={() => props.navigation.pop()} />
     </View>
   );
 };
