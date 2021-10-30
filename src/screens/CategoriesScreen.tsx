@@ -6,14 +6,12 @@ import {
   FlatList,
   ListRenderItemInfo,
   TouchableOpacity,
-  Platform,
 } from "react-native";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
 import { StackNavigationProp } from "react-navigation-stack/lib/typescript/src/vendor/types";
 
 import Category from "../models/Category";
 import { CATEGORIES } from "../data/dummy-data";
-import Colors from "../constants/Colors";
 
 const renderGridItem = (
   navigation: StackNavigationProp,
@@ -51,10 +49,6 @@ const CategoriesScreen: NavigationStackScreenComponent = (props) => {
 
 CategoriesScreen.navigationOptions = {
   headerTitle: "Meal Categories",
-  headerStyle: {
-    backgroundColor: Platform.OS === "android" ? Colors.primary : "",
-  },
-  headerTintColor: Platform.OS === "android" ? "white" : Colors.primary,
 };
 
 const styles = StyleSheet.create({
