@@ -10,6 +10,7 @@ import {
 import { NavigationStackScreenComponent } from "react-navigation-stack";
 import { StackNavigationProp } from "react-navigation-stack/lib/typescript/src/vendor/types";
 
+import CategoryGridTile from "../components/CategoryGridTile";
 import Category from "../models/Category";
 import { CATEGORIES } from "../data/dummy-data";
 
@@ -18,21 +19,18 @@ const renderGridItem = (
   itemData: ListRenderItemInfo<Category>
 ): JSX.Element => {
   return (
-    <TouchableOpacity
-      style={styles.gridItem}
-      onPress={() =>
+    <CategoryGridTile
+      title={itemData.item.title}
+      color={itemData.item.color}
+      onClick={() => {
         navigation.navigate({
           routeName: "CategoryMeals",
           params: {
             categoryId: itemData.item.id,
           },
-        })
-      }
-    >
-      <View>
-        <Text>{itemData.item.title}</Text>
-      </View>
-    </TouchableOpacity>
+        });
+      }}
+    />
   );
 };
 
@@ -57,11 +55,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     margin: 10,
-  },
-  gridItem: {
-    flex: 1,
-    margin: 15,
-    height: 150,
   },
 });
 
