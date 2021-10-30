@@ -1,7 +1,9 @@
 import React from "react";
 import { View, Text, StyleSheet, Button } from "react-native";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
 
+import CustomHeaderButton from "../components/CustomHeaderButton";
 import { MEALS } from "../data/dummy-data";
 
 const MealDetailScreen: NavigationStackScreenComponent = (props) => {
@@ -18,6 +20,24 @@ const MealDetailScreen: NavigationStackScreenComponent = (props) => {
       />
     </View>
   );
+};
+
+MealDetailScreen.navigationOptions = ({ navigation }) => {
+  return {
+    headerTitle: MEALS.find((meal) => meal.id === navigation.getParam("mealId"))
+      ?.title,
+    headerRight: () => (
+      <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+        <Item
+          title="Favorite"
+          iconName="ios-star"
+          onPress={() => {
+            console.log("Favorite");
+          }}
+        />
+      </HeaderButtons>
+    ),
+  };
 };
 
 const styles = StyleSheet.create({
