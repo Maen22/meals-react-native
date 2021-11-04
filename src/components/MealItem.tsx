@@ -3,8 +3,6 @@ import {
   View,
   Text,
   StyleSheet,
-  Platform,
-  TouchableNativeFeedback,
   TouchableOpacity,
   ImageBackground,
 } from "react-native";
@@ -12,14 +10,9 @@ import {
 import Meal from "../models/Meal";
 
 const MealItem: React.FC<Props> = (props) => {
-  let TouchableComponent: React.ElementType = TouchableOpacity;
-  if (Platform.OS === "android" && Platform.Version >= 21) {
-    TouchableComponent = TouchableNativeFeedback;
-  }
-
   return (
     <View style={styles.mealItem}>
-      <TouchableComponent style={{ flex: 1 }} onPress={props.onClick}>
+      <TouchableOpacity onPress={props.onClick}>
         <View>
           <View style={{ ...styles.mealRow, ...styles.mealHeader }}>
             <ImageBackground
@@ -37,7 +30,7 @@ const MealItem: React.FC<Props> = (props) => {
             <Text>{props.item.affordability.toUpperCase()}</Text>
           </View>
         </View>
-      </TouchableComponent>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -50,7 +43,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     overflow: "hidden",
     marginVertical: 10,
-    flex: 1,
   },
   mealRow: {
     flexDirection: "row",
@@ -73,10 +65,10 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   mealDetail: {
-    height: "15%",
     paddingHorizontal: 10,
     justifyContent: "space-between",
     alignItems: "center",
+    height: "15%",
   },
 });
 
