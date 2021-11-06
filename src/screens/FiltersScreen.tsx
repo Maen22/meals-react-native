@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { View, Text, StyleSheet, Switch, Platform } from "react-native";
 import { DrawerActions } from "react-navigation-drawer";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
 import CustomHeaderButton from "../components/CustomHeaderButton";
 import Colors from "../constants/Colors";
+import { setFiltersAction } from "../store/actions/mealsActions";
 
 type FilterSwitchProps = {
   label: string;
@@ -30,6 +32,25 @@ const FiltersScreen: NavigationStackScreenComponent = (props) => {
   const [isLactoseFree, setIsLactoseFree] = useState(false);
   const [isVegan, setIsVegan] = useState(false);
   const [isVegetarian, setIsVegeterian] = useState(false);
+  const dispatch = useDispatch();
+  const { navigation } = props;
+
+  const saveFilters = useCallback(() => {
+    const appliedFilters = {
+      glutenFree: isGlutenFree,
+      lactoseFree: isLactoseFree,
+      vegan: isVegan,
+      vegetarian: isVegetarian,
+    };
+    console.log("applied filters");
+    console.log(appliedFilters);
+
+    dispatch(setFiltersAction(appliedFilters));
+  }, [isGlutenFree, isLactoseFree, isVegan, isVegetarian]);
+
+  useEffect(() => {
+    navigation.setParams({ save: saveFilters });
+  }, [saveFilters]);
 
   return (
     <View style={styles.screen}>
@@ -72,9 +93,7 @@ FiltersScreen.navigationOptions = (navData) => ({
       <Item
         title="Save"
         iconName="ios-save"
-        onPress={() => {
-          console.log("saved!");
-        }}
+        onPress={navData.navigation.getParam("save")}
       ></Item>
     </HeaderButtons>
   ),

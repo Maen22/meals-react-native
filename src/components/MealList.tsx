@@ -1,28 +1,35 @@
 import React from "react";
 import { View, StyleSheet, FlatList, ListRenderItemInfo } from "react-native";
+import { useSelector } from "react-redux";
 import { StackNavigationProp } from "react-navigation-stack/lib/typescript/src/vendor/types";
 
 import Meal from "../models/Meal";
 import MealItem from "./MealItem";
 
-const renderMealItem = (
-  navigation: StackNavigationProp,
-  itemData: ListRenderItemInfo<Meal>
-) => {
-  return (
-    <MealItem
-      item={itemData.item}
-      onClick={() => {
-        navigation.navigate({
-          routeName: "MealDetail",
-          params: { mealId: itemData.item.id, mealTitle: itemData.item.title },
-        });
-      }}
-    />
-  );
-};
-
 const MealList: React.FC<Props> = (props) => {
+  const favMeals = useSelector((state: any) => state.meals.favoriteMeals);
+
+  const renderMealItem = (
+    navigation: StackNavigationProp,
+    itemData: ListRenderItemInfo<Meal>
+  ) => {
+    return (
+      <MealItem
+        item={itemData.item}
+        onClick={() => {
+          navigation.navigate({
+            routeName: "MealDetail",
+            params: {
+              mealId: itemData.item.id,
+              mealTitle: itemData.item.title,
+              isFav: favMeals.some((meal: any) => meal.id === itemData.item.id),
+            },
+          });
+        }}
+      />
+    );
+  };
+
   return (
     <View style={styles.screen}>
       <FlatList

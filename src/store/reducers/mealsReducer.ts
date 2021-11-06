@@ -2,7 +2,7 @@ import { AnyAction } from "redux";
 
 import Meal from "../../models/Meal";
 import { MEALS } from "../../data/dummy-data";
-import { TOGGLE_FAVORITE } from "../actions/mealsActions";
+import { SET_FILTERS, TOGGLE_FAVORITE } from "../actions/mealsActions";
 
 const initalState: AppState = {
   meals: MEALS,
@@ -30,6 +30,26 @@ const mealsReducer = (state: AppState = initalState, action: AnyAction) => {
           favoriteMeals: [...state.favoriteMeals.concat(newFavMeal!)],
         };
       }
+    case SET_FILTERS:
+      const appliedFilters = action.payload.filters;
+      const updatedFilteredMeals = state.meals.filter((meal: Meal) => {
+        console.log("reached set filters");
+
+        if (appliedFilters.glutenFree && !meal.isGlutenFree) {
+          return false;
+        }
+        if (appliedFilters.lactoseFree && !meal.isLactoseFree) {
+          return false;
+        }
+        if (appliedFilters.vegetarian && !meal.isVegetarian) {
+          return false;
+        }
+        if (appliedFilters.vegan && !meal.isVegan) {
+          return false;
+        }
+        return true;
+      });
+      return { ...state, filteredMeals: updatedFilteredMeals };
     default:
       return state;
   }
