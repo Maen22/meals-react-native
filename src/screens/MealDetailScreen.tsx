@@ -1,18 +1,12 @@
-import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Button,
-  ScrollView,
-  Image,
-} from "react-native";
+import React, { useEffect, useCallback } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { View, Text, StyleSheet, ScrollView, Image } from "react-native";
 import { NavigationStackScreenComponent } from "react-navigation-stack";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 
 import CustomHeaderButton from "../components/CustomHeaderButton";
-import { MEALS } from "../data/dummy-data";
 import DefautlText from "../components/DefaultText";
+import { toggleFavoriteAction } from "../store/actions/mealsActions";
 
 const ListItem: React.FC = (props) => {
   return (
@@ -23,9 +17,19 @@ const ListItem: React.FC = (props) => {
 };
 
 const MealDetailScreen: NavigationStackScreenComponent = (props) => {
+  const availableMeals = useSelector((state: any) => state.meals.meals);
   const mealId = props.navigation.getParam("mealId");
+  const meal = availableMeals.find((meal: any) => meal.id === mealId);
 
-  const meal = MEALS.find((meal) => meal.id === mealId);
+  const dispatch = useDispatch();
+
+  const toggleFavoriteHandler = useCallback(() => {
+    dispatch(toggleFavoriteAction(mealId));
+  }, [dispatch, mealId]);
+
+  useEffect(() => {
+    props.navigation.setParams({ toggleFav: toggleFavoriteHandler });
+  }, [toggleFavoriteHandler]);
 
   return (
     <ScrollView>
@@ -36,11 +40,11 @@ const MealDetailScreen: NavigationStackScreenComponent = (props) => {
         <DefautlText>{meal?.affordability.toUpperCase()}</DefautlText>
       </View>
       <Text style={styles.title}>Ingredients</Text>
-      {meal?.ingredients.map((ingredient) => {
+      {meal?.ingredients.map((ingredient: any) => {
         return <ListItem key={ingredient}>{ingredient}</ListItem>;
       })}
       <Text style={styles.title}>Steps</Text>
-      {meal?.steps.map((step) => {
+      {meal?.steps.map((step: any) => {
         return <ListItem key={step}>{step}</ListItem>;
       })}
     </ScrollView>
@@ -48,18 +52,12 @@ const MealDetailScreen: NavigationStackScreenComponent = (props) => {
 };
 
 MealDetailScreen.navigationOptions = ({ navigation }) => {
+  const toggleFav = navigation.getParam("toggleFav");
   return {
-    headerTitle: MEALS.find((meal) => meal.id === navigation.getParam("mealId"))
-      ?.title,
+    headerTitle: navigation.getParam("mealTitle"),
     headerRight: () => (
       <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
-        <Item
-          title="Favorite"
-          iconName="ios-star"
-          onPress={() => {
-            console.log("Favorite");
-          }}
-        />
+        <Item title="Favorite" iconName="ios-star" onPress={toggleFav} />
       </HeaderButtons>
     ),
   };

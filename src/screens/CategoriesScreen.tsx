@@ -8,7 +8,6 @@ import CustomHeaderButton from "../components/CustomHeaderButton";
 import CategoryGridTile from "../components/CategoryGridTile";
 import Category from "../models/Category";
 import { CATEGORIES } from "../data/dummy-data";
-import { NavigationScreenConfigProps } from "react-navigation";
 import { DrawerActions } from "react-navigation-drawer";
 
 const renderGridItem = (

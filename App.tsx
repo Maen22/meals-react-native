@@ -4,7 +4,7 @@ import { useFonts } from "expo-font";
 import { createStore, combineReducers } from "redux";
 import { Provider } from "react-redux";
 
-import mealsReducer from "./src/store/reducers/meals";
+import mealsReducer from "./src/store/reducers/mealsReducer";
 import MealsNavigator from "./src/navigation/MealsNavigator";
 
 enableScreens(false);
